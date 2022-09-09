@@ -2,7 +2,8 @@
   "name": "influxdb-light",
   "version": "1.0.0",
   "description": "A light weight client to write and read data from InfluxDb.",
-  "main": "./dist/index.js",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "start": "npm run build && node ./dist/lib/index.js",
     "build": "tsc",
