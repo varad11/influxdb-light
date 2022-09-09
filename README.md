@@ -1,6 +1,6 @@
 # influxdb-light
-A lightweight client to write and read data from InfluxDb.
-Supports R/W operations for both InfluxDb V1.0 and V2.0.
+A lightweight client to write and read data from InfluxDb.  
+Supports R/W operations for both InfluxDb V1.0 and V2.0.  
 
 ## Installation
 ```sh
