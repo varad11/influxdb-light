@@ -1,0 +1,42 @@
+{
+  "name": "log-to-influxdb",
+  "version": "1.0.0",
+  "description": "A simple logging module for storing log data of any operation to InfluxDB",
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "npm run build && node ./dist/lib/index.js",
+    "build": "tsc",
+    "test": "ts-node ./node_modules/jasmine/bin/jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/varad11/influxdb-light.git"
+  },
+  "keywords": [
+    "influxd",
+    "influxdb",
+    "influx",
+    "influx",
+    "influx-client",
+    "influxdb-client",
+    "influx-http",
+    "influxdb-http",
+    "influxdb-light",
+    "light",
+    "time series"
+  ],
+  "author": "Varad Shevade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/varad11/influxdb-light.git/issues"
+  },
+  "homepage": "https://github.com/varad11/influxdb-light.git#readme",
+  "dependencies": {
+    "@types/node": "18.7.13"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^4.3.0",
+    "jasmine": "^4.4.0",
+    "ts-node": "^10.9.1"
+  }
+}

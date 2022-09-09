@@ -1,0 +1,16 @@
+{
+  "spec_dir": "spec",
+  "spec_files": [
+    "**/*[sS]pec.ts"
+  ],
+  "helpers": [
+    "lib/**/*.ts",
+    "model/**/*.ts"
+  ],
+  "env": {
+    "stopSpecOnExpectationFailure": false,
+    "failSpecWithNoExpectations": false,
+    "stopOnSpecFailure": false,
+    "random": false
+  }
+}
