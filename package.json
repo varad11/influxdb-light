@@ -1,7 +1,7 @@
 {
-  "name": "log-to-influxdb",
+  "name": "influxdb-light",
   "version": "1.0.0",
-  "description": "A simple logging module for storing log data of any operation to InfluxDB",
+  "description": "A light weight client to write and read data from InfluxDb.",
   "main": "./dist/index.js",
   "scripts": {
     "start": "npm run build && node ./dist/lib/index.js",
@@ -23,7 +23,9 @@
     "influxdb-http",
     "influxdb-light",
     "light",
-    "time series"
+    "time series",
+    "influx query",
+    "influx write"
   ],
   "author": "Varad Shevade",
   "license": "MIT",
