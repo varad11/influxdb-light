@@ -92,7 +92,7 @@ influxDb.writeV2({
         });
 
 //Read from InfluxDb
-influxDb..queryV2("orgtest", `from(bucket:"demo1") |> 
+influxDb.queryV2("orgtest", `from(bucket:"demo1") |> 
     range(start: -60d) |> 
     filter(fn: (r) => r._measurement == "energy") |> 
     filter(fn: (r) => r.deviceId == "d007") |> 
