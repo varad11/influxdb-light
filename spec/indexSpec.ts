@@ -33,7 +33,7 @@ describe("READ QUERIES", () => {
         port: "8086", 
         protocol: "http"
     }
-    xit("Test For V1.0 DB", async () => {
+    it("Test For V1.0 DB", async () => {
         await expectAsync(new InfluxDB(request).queryV1("demo1", `SELECT * FROM "energy" WHERE "deviceId"='d001'`)).toBeResolvedTo([
             {
                 "statement_id": 0,

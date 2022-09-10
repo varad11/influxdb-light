@@ -1,6 +1,6 @@
 {
   "name": "influxdb-light",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A light weight client to write and read data from InfluxDb.",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -34,11 +34,9 @@
     "url": "https://github.com/varad11/influxdb-light.git/issues"
   },
   "homepage": "https://github.com/varad11/influxdb-light.git#readme",
-  "dependencies": {
-    "@types/node": "18.7.13"
-  },
   "devDependencies": {
     "@types/jasmine": "^4.3.0",
+    "@types/node": "^18.7.16",
     "jasmine": "^4.4.0",
     "ts-node": "^10.9.1"
   }
