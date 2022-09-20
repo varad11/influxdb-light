@@ -1,6 +1,7 @@
 # influxdb-light
-A lightweight client to write and read data from InfluxDb.  
-Supports R/W operations for both InfluxDb V1.0 and V2.0.  
+A lightweight NodeJs client to write and read data from InfluxDb.  
+Supports Read and Write operations for both InfluxDb V1.0 and V2.0.  
+Supports both sql and flux query.  
 
 ## Installation
 ```sh
