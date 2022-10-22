@@ -2,6 +2,8 @@
 A lightweight NodeJs client to write and read data from InfluxDb.  
 Supports Read and Write operations for both InfluxDb V1.0 and V2.0.  
 Supports both sql and flux query.  
+This light weight client is incredibly easy to use.  
+Handling of tags and fields is straightforward with no additional complexity.  
 
 ## Installation
 ```sh
@@ -9,11 +11,17 @@ npm i influxdb-light
 ```
 
 ## Usage
-### InfluxDb Version 1
+### InfluxDb Version 1 Example
 ```typescript
 import { InfluxDB } from "influxdb-light";
 
-const request = { host: "localhost", port: "8086", protocol: "http", username: "<username>", password: "<password>" };
+const request = { 
+    host: "localhost", 
+    port: "8086", 
+    protocol: "http", 
+    username: "<username>", 
+    password: "<password>" 
+};
 const influxDb = new InfluxDB(request);
 const dbName = "demo1";
 const measurement = "energy";
@@ -61,11 +69,16 @@ influxDb.queryV1(dbName, `SELECT * FROM ${measurement} WHERE "deviceId"='d007'`)
     });
 ```
 
-### InfluxDb Version 2
+### InfluxDb Version 2 Example
 ```typescript
 import { InfluxDB } from "influxdb-light";
 
-const request = { host: "localhost", port: "8086", protocol: "http", token: "<token_value>" };
+const request = { 
+    host: "localhost", 
+    port: "8086", 
+    protocol: "http", 
+    token: "<token_value>" 
+};
 const influxDb = new InfluxDB(request);
 const org = "demo_org";
 const dbName = "demo1";
@@ -102,7 +115,8 @@ influxDb.queryV2("orgtest", `from(bucket:"demo1") |>
         console.log(res);
         //Output: /*Returns string with comma separation. To be parsed as csv*/
         //,result,table,_start,_stop,_time,_measurement,deviceId,enabled,location,type,ip,valueX,valueY
-        //,_result,0,2022-07-11T10:50:17.6390562Z,2022-09-09T10:50:17.6390562Z,2022-09-09T10:46:09.3298829Z,energy,d007,false,L007,7,192.168.0.2,100,120
+        //,_result,0,2022-07-11T10:50:17.6390562Z,2022-09-09T10:50:17.6390562Z,
+            //2022-09-09T10:46:09.3298829Z,energy,d007,false,L007,7,192.168.0.2,100,120
     }).catch(err => {
         console.error(err);
     });

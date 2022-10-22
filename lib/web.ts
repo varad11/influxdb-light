@@ -36,7 +36,10 @@ export async function post<T>(requestOptions: OptionsSchema, data: T): Promise<a
             });
             listener.on("end", () => {
                 let result = chunks.length ? Buffer.concat(chunks).toString() : chunks;
-                resolve(result);
+                if(listener.statusCode > 300)
+                    reject(result);
+                else
+                    resolve(result);
             });
         });
 
