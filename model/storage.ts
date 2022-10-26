@@ -4,5 +4,6 @@ export interface DataPayload {
 export interface RequestPayload {    
     measurement: string;
     tags: Array<string>;
-    payload: Array<DataPayload>;
+    payload: Array<DataPayload>;    
+    timestamp?: number | string; //in nanoseconds
 }

@@ -38,7 +38,8 @@ influxDb.writeV1({
                 valueY: 120,
                 ip: "192.168.0.2"
             }],
-            tags: ["deviceId", "location", "type", "enabled"]
+            tags: ["deviceId", "location", "type", "enabled"],
+            timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
         }, dbName)
         .then(res => {
             console.log(res);
@@ -96,7 +97,8 @@ influxDb.writeV2({
                 valueY: 120,
                 ip: "192.168.0.2"
             }],
-            tags: ["deviceId", "location", "type", "enabled"]
+            tags: ["deviceId", "location", "type", "enabled"],
+            timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
         }, org, dbName)
         .then(res => {
             console.log(res);            

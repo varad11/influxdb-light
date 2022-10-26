@@ -113,7 +113,9 @@ export function toInfluxFormat(inputData: RequestPayload) {
         result += inputData.tags.length 
             ? `${inputData.measurement},${serializedTags.join(",")} ${serializedFields.join(",")}` 
             : `${inputData.measurement} ${serializedFields.join(",")}`;
+        
+        result += inputData.timestamp ? ` ${inputData.timestamp}` : ""; //update timestamp if explicitely provided
     }
-    return result
+    return result;
 }
 
