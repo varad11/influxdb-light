@@ -109,6 +109,9 @@ export function toInfluxFormat(inputData: RequestPayload) {
                 delete inputPayload[key];
             }
         }
+        //if result already contains an entry, then it is multi data insertion, hence first append "\n" to the end
+        result = result ? result + "\n" : result;
+        
         //if tags present then comma after measurement field.
         result += inputData.tags.length 
             ? `${inputData.measurement},${serializedTags.join(",")} ${serializedFields.join(",")}` 
