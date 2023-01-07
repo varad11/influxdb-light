@@ -102,7 +102,12 @@ export function toInfluxFormat(inputData: RequestPayload) {
                     serializedTags.push(`${key}=${inputPayload[key]}`);
                 } else {
                     //array of fields. Eg.: ["field1=value1", "field2=value2",....]
-                    const field = typeof inputPayload[key] === "string" ? `"${inputPayload[key]}"` : inputPayload[key];
+                    let field = inputPayload[key];
+                    if (typeof inputPayload[key] === "string") {
+                        if (!(inputPayload[key] as string).match(/\d+i/)) {
+                            field = `"${inputPayload[key]}"`;
+                        }
+                    }
                     serializedFields.push(`${key}=${field}`);
                 }
                 //delete the entry from input
