@@ -4,6 +4,17 @@ import { post, toInfluxFormat, get } from "./web";
 import { toBase64 } from "./util";
 import { QueryV1Response } from "../model/query";
 
+export interface WriteV1QueryParams {
+    precision?: 'n' | 'u' | 'ms' | 's' | 'm' | 'h'
+    /** password */
+    p?: string 
+    /** username */
+    u?: string
+    /** retention policy */
+    rp?:string
+    consistency?:'any' | 'one' | 'quorum' | 'all'
+}
+
 export class InfluxDB {
     private request: RequestSchema;
     constructor(request: RequestSchema) {
@@ -14,10 +25,15 @@ export class InfluxDB {
      * To write points to v1 db.
      * @param payload : RequestPayload
      * @param db : string
+     * @param queryParams : Record<string, string> - optional
      * @returns : Promise<any>
      */
-    writeV1(payload: RequestPayload, db: string) : Promise<any> {
-        let options: OptionsSchema = { ...this.request, ...{ path: `/write?db=${db}` } };
+    writeV1(payload: RequestPayload, db: string, queryParams?: WriteV1QueryParams) : Promise<any> {
+        let options: OptionsSchema = { ...this.request, path: `/write?db=${db}`, headers: this.setHeaders("text/plain") };
+        if (queryParams) {
+            const qs = Object.entries(queryParams).map(([k, v]) => `${k}=${v}`).join("&");
+            options.path += "&" + qs
+        }
         options = { ...options, headers: this.setHeaders("text/plain") };
         return post<String>(options, toInfluxFormat(payload));
     }
@@ -27,11 +43,20 @@ export class InfluxDB {
      * @param payload 
      * @param org 
      * @param bucket 
+     * @param precision
      * @returns : Promise<any>
      */
-    writeV2(payload: RequestPayload, org: string, bucket: string) : Promise<any> {
-        let options: OptionsSchema = { ...this.request, ...{ path: `/api/v2/write?org=${org}&bucket=${bucket}` } };
-        options = { ...options, headers: this.setHeaders("text/plain") };
+    writeV2(payload: RequestPayload, org: string, bucket: string, precision?: 'ns' | 'ms' | 'us') : Promise<any> {
+        const options: OptionsSchema = { 
+            ...this.request, 
+            path: `/api/v2/write?org=${org}&bucket=${bucket}`,
+            headers: this.setHeaders("text/plain")
+        }
+        
+        if (precision) {
+            options.path += `&precision=${precision}`
+        }
+
         return post<String>(options, toInfluxFormat(payload));
     }
 
