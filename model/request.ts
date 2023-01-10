@@ -11,3 +11,13 @@ export interface OptionsSchema extends RequestSchema {
     path: string;
     headers?: {}
 }
+
+export interface CreateBucket {
+    orgID:          string;
+    name:           string;
+    retentionRules: Array<{
+        type:                      string;
+        everySeconds:              number;
+        shardGroupDurationSeconds: number;
+    }>;
+}

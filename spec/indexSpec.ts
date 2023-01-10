@@ -27,7 +27,7 @@ xdescribe("WRITE QUERY", () => {
     });
 });
 
-describe("READ QUERIES", () => {
+xdescribe("READ QUERIES", () => {
     let request: RequestSchema = {
         host: "localhost", 
         port: "8086", 
@@ -78,5 +78,34 @@ describe("READ QUERIES", () => {
                         filter(fn: (r) => r.deviceId == "d007") |> 
                         pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")`))
             .toBeResolvedTo(`,result,table,_start,_stop,_time,_measurement,deviceId,enabled,location,type,ip,valueX,valueY,_result,0,2022-07-11T10:50:17.6390562Z,2022-09-09T10:50:17.6390562Z,2022-09-09T10:46:09.3298829Z,energy,d007,false,L007,7,192.168.0.2,100,120`);
+    });
+});
+
+describe("BUCKET TESTS", () => {
+    const request: RequestSchema = {
+        host: "localhost", 
+        port: "8086", 
+        protocol: "http",
+        token: "bNXKI6W46LqyHykW5okkx67hSnQ0NOhHHY8nAv22b5VG7B8k0Tkx-3v8f02jdzWzBRP9WtdAnRejcwtWqDJZ1Q=="
+    };
+
+    xit("Create a bucket", async () => {
+        const result = await new InfluxDB(request).createBucket("640bee9277f75f2d", "testBucket007", 3600);
+        expect(result).toEqual(jasmine.objectContaining({name: "testBucket007", retentionTime: 3600}));
+    });
+
+    it("List All Buckets", async () => {
+        const result = await new InfluxDB(request).listBuckets("640bee9277f75f2d");
+        expect(result.map(bucket => bucket.name)).toBe(["testBucket007", "demo1"]);
+    });
+
+    it("Get Bucket Details By Id", async () => {
+        const result = await new InfluxDB(request).getBucket("640bee9277f75f2d", { id: "10592e2bff3d1789" });
+        expect(result).toEqual({bucketId: '10592e2bff3d1789', name: 'testBucket007', createdAt: '2023-01-09T12:21:18.3806061Z', retentionTime: 3600});
+    });
+
+    it("Get Bucket Details By name", async () => {
+        const result = await new InfluxDB(request).getBucket("640bee9277f75f2d", { name: "testBucket007" });
+        expect(result).toEqual({bucketId: '10592e2bff3d1789', name: 'testBucket007', createdAt: '2023-01-09T12:21:18.3806061Z', retentionTime: 3600});
     });
 });

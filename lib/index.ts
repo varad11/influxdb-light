@@ -1,8 +1,8 @@
 import { RequestPayload } from "../model/storage";
-import { OptionsSchema, RequestSchema } from "../model/request";
+import { CreateBucket, OptionsSchema, RequestSchema } from "../model/request";
 import { post, toInfluxFormat, get } from "./web";
 import { toBase64 } from "./util";
-import { QueryV1Response } from "../model/query";
+import { QueryV1Response, CreateBucketDBResponse, BucketsDBResponse } from "../model/response";
 
 export interface WriteV1QueryParams {
     precision?: 'n' | 'u' | 'ms' | 's' | 'm' | 'h'
@@ -88,7 +88,7 @@ export class InfluxDB {
      * Get records from InfluxDB V2.0
      * @param org : string
      * @param fluxQuery : string (accepts flux query only)
-     * @returns Promise<any>
+     * @returns : Promise<any>
      */
     queryV2(org: string, fluxQuery: string) : Promise<any> {
         let options: OptionsSchema = { ...this.request, ...{ path: `/api/v2/query?org=${org}` } };
@@ -104,5 +104,82 @@ export class InfluxDB {
             : {};
         headers = contentType ? { ...headers, "Content-Type": contentType } : headers;
         return headers;
+    }
+
+    /**
+     * Create A Bucket
+     * @param orgID  : string (Organisation ID)
+     * @param name : string (Name of the bucket)
+     * @param duration : numner (In seconds)
+     * @returns : Promise<{bucketId: string, name: string, createdAt: string}>
+     */
+    createBucket(orgID: string, name: string, duration: number): Promise<{bucketId: string, name: string, createdAt: string, retentionTime: number}> {
+        return new Promise((resolve, reject) => {
+            const payload: CreateBucket = {
+                orgID,
+                name,
+                retentionRules: [{
+                    type: "expire",
+                    everySeconds: duration,
+                    shardGroupDurationSeconds: 0
+                }],
+                rp: duration.toString()
+            }
+            const options: OptionsSchema = { ...this.request,  path: `/api/v2/buckets`, headers: this.setHeaders() };
+            post<CreateBucket>(options, payload)
+                .then(value => {
+                    const bucket: CreateBucketDBResponse = JSON.parse(value);
+                    resolve({ bucketId: bucket.id, name: bucket.name, createdAt: bucket.createdAt, retentionTime: bucket.retentionRules[0].everySeconds });
+                }).catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
+    /**
+     * Returns a list of all the user created buckets
+     * @param orgID : string (Organisation ID)
+     * @returns : Promise<Array<{bucketId: string, name: string, createdAt: string}>>
+     */
+    listBuckets(orgID: string): Promise<Array<{bucketId: string, name: string, createdAt: string, retentionTime: number}>> {
+        const options: OptionsSchema = { ...this.request, path: `/api/v2/buckets?orgID=${orgID}`, headers: this.setHeaders() };
+        return new Promise((resolve, reject) => {
+            get<BucketsDBResponse>(options)
+                .then((response: BucketsDBResponse) => {
+                    if(response.buckets && response.buckets.length) {
+                        //return array of user created buckets with their id and name
+                        resolve(response.buckets.filter(bucket => bucket.type !== "system").map(bucket => { return { bucketId: bucket.id, name: bucket.name, createdAt: bucket.createdAt, retentionTime: bucket.retentionRules[0].everySeconds } }));
+                    } else {
+                        resolve([])
+                    }
+                }).catch(error => {
+                    reject(error);
+                });
+        })
+    }
+
+    /**
+     * Returns the bucket details.
+     * @param orgID : string (Organisation ID)
+     * @param bucket : { id?: string, name?: string } (Fetch by either bucket id or bucket name)
+     * @returns : Promise<{bucketId: string, name: string, createdAt: string}>
+     */
+    getBucket(orgID: string, bucket: { id?: string, name?: string }): Promise<{bucketId: string, name: string, createdAt: string, retentionTime: number} | null> {
+        const options: OptionsSchema = { ...this.request, path: `/api/v2/buckets?orgID=${orgID}`, headers: this.setHeaders() };
+        options.path += bucket.id ? `&id=${bucket.id}` : bucket.name ? `&name=${bucket.name}` : "";
+        return new Promise((resolve, reject) => {
+            get<BucketsDBResponse>(options)
+                .then((response: BucketsDBResponse) => {
+                    if(response.buckets && response.buckets.length) {
+                        const bucket = response.buckets[0];
+                        //return array of user created buckets with their id and name
+                        resolve({ bucketId: bucket.id, name: bucket.name, createdAt: bucket.createdAt, retentionTime: bucket.retentionRules[0].everySeconds });
+                    } else {
+                        resolve(null);
+                    }
+                }).catch(error => {
+                    reject(error);
+                });
+        })
     }
 }
