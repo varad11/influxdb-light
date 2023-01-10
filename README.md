@@ -123,3 +123,24 @@ influxDb.queryV2("orgtest", `from(bucket:"demo1") |>
         console.error(err);
     });
 ```
+
+### Examples of Bucket operations on InfluxDB V2.x.x
+```typescript
+import { InfluxDB } from "influxdb-light";
+const influxDb = new InfluxDB({ host: "localhost", port: "8086", protocol: "http", token: "<token_value>" });
+
+//Create a Bucket
+influxDb.createBucket(<org_ID>, <bucket_name>, <retention_in_seconds>)
+    //output: { bucketId: <string>, name: <string>, createdAt: <string>, retentionTime: <number> }
+
+//Get specific bucket
+//i). By Bucket ID
+influxDb.getBucket("640bee9277f75f2d", { id: "10592e2bff3d1789" });
+//ii). By Bucket Name
+influxDb.getBucket("640bee9277f75f2d", { name: "testBucket007" });
+    //output: { bucketId: <string>, name: <string>, createdAt: <string>, retentionTime: <number> }
+
+//List All Buckets
+influxDb.listBuckets("640bee9277f75f2d");
+    //output: Array<{ bucketId: <string>, name: <string>, createdAt: <string>, retentionTime: <number> }>
+```

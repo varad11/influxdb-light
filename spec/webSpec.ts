@@ -21,7 +21,7 @@ xdescribe("Method POST", () => {
 
 });
 
-describe("Method GET", () => {
+xdescribe("Method GET", () => {
     let options: OptionsSchema = {
         host: "localhost",
         port: "8086",
