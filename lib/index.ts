@@ -123,7 +123,6 @@ export class InfluxDB {
                     everySeconds: duration,
                     shardGroupDurationSeconds: 0
                 }],
-                rp: duration.toString()
             }
             const options: OptionsSchema = { ...this.request,  path: `/api/v2/buckets`, headers: this.setHeaders() };
             post<CreateBucket>(options, payload)
