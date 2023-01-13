@@ -106,7 +106,7 @@ influxDb.writeV2({
             }],
             tags: ["deviceId", "location", "type", "enabled"],
             timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
-        }, org, dbName, 'ns')
+        }, org, dbName, precision)
         .then(res => {
             console.log(res);            
             //Output: [] //Empty array indicates data added
