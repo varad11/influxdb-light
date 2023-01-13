@@ -40,7 +40,13 @@ influxDb.writeV1({
             }],
             tags: ["deviceId", "location", "type", "enabled"],
             timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
-        }, dbName)
+        }, 
+        dbName,
+        // queryParams is optional. see WriteV1QueryParams
+        {
+            rp: 'autogen', // retention policy
+            consistency: 'all'
+        })
         .then(res => {
             console.log(res);
             //Output: [] //Empty array indicates data added
@@ -84,6 +90,7 @@ const influxDb = new InfluxDB(request);
 const org = "demo_org";
 const dbName = "demo1";
 const measurement = "energy";
+const precision = "ns"; // precision is unit about timestamp of payload. and it's optional parameter.
 
 //Write to InfluxDb
 influxDb.writeV2({
@@ -99,7 +106,7 @@ influxDb.writeV2({
             }],
             tags: ["deviceId", "location", "type", "enabled"],
             timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
-        }, org, dbName)
+        }, org, dbName, precision)
         .then(res => {
             console.log(res);            
             //Output: [] //Empty array indicates data added
