@@ -142,12 +142,12 @@ influxDb.createBucket(<org_ID>, <bucket_name>, <retention_in_seconds>)
 
 //Get specific bucket
 //i). By Bucket ID
-influxDb.getBucket("640bee9277f75f2d", { id: "10592e2bff3d1789" });
+influxDb.getBucket("640bee9277f75f2d", { id: "10592e2bff3d1789" }).then(result => console.log(result));
 //ii). By Bucket Name
-influxDb.getBucket("640bee9277f75f2d", { name: "testBucket007" });
+influxDb.getBucket("640bee9277f75f2d", { name: "testBucket007" }).then(result => console.log(result));
     //output: { bucketId: <string>, name: <string>, createdAt: <string>, retentionTime: <number> }
 
 //List All Buckets
-influxDb.listBuckets("640bee9277f75f2d");
+influxDb.listBuckets("640bee9277f75f2d").then(result => console.log(result));
     //output: Array<{ bucketId: <string>, name: <string>, createdAt: <string>, retentionTime: <number> }>
 ```
