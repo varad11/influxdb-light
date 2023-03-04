@@ -29,7 +29,7 @@ export async function post<T>(requestOptions: OptionsSchema, data: T): Promise<a
 
     //return promise of the response
     return new Promise((resolve: any, reject: any) => {
-        const request = module.request(options, (listener: any) => {                
+        const request = module.request(options, (listener: any) => {
             listener.on("data", (data: any) => {
                 chunks.push(data);
             });

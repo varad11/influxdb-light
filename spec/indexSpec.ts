@@ -95,7 +95,7 @@ xdescribe("READ QUERIES", () => {
     });
 });
 
-xdescribe("BUCKET TESTS", () => {
+describe("BUCKET TESTS", () => {
     const request: RequestSchema = {
         host: "localhost", 
         port: "8086", 
