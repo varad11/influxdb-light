@@ -21,7 +21,7 @@ function setRequestOptions(requestOptions: OptionsSchema) {
  */
 export async function post<T>(requestOptions: OptionsSchema, data: T): Promise<any> {
     //set protocol
-    const module = requestOptions.protocol == "http" ? http : https;
+    const module = requestOptions.protocol === "http" ? http : https;
     const options = { ...setRequestOptions(requestOptions), method: "POST" };
     const chunks: Array<any> = [];
     //add content-length header
@@ -62,7 +62,7 @@ export async function post<T>(requestOptions: OptionsSchema, data: T): Promise<a
  */
 export async function get<T>(requestOptions: OptionsSchema): Promise<any> {
     //set protocol
-    const module = requestOptions.protocol == "http" ? http : https;
+    const module = requestOptions.protocol === "http" ? http : https;
     //set request options
     const options = setRequestOptions(requestOptions);
     const chunks: Array<any> = [];
