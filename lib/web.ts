@@ -5,7 +5,7 @@ import { RequestPayload, DataPayload } from "../model/storage";
 
 function setRequestOptions(requestOptions: OptionsSchema) {
     //set the options
-    let options = {
+    let options: any = {
         hostname: requestOptions.host,
         path: encodeURI(requestOptions.path),
         headers: requestOptions.headers    
@@ -21,9 +21,11 @@ function setRequestOptions(requestOptions: OptionsSchema) {
  */
 export async function post<T>(requestOptions: OptionsSchema, data: T): Promise<any> {
     //set protocol
-    const module = requestOptions.protocol.includes("http") ? http : https;
+    const module = requestOptions.protocol === "http" ? http : https;
     const options = { ...setRequestOptions(requestOptions), method: "POST" };
     const chunks: Array<any> = [];
+    //add content-length header
+    options.headers["Content-Length"] = Buffer.byteLength(JSON.stringify(data), "utf-8");
 
     //return promise of the response
     return new Promise((resolve: any, reject: any) => {
@@ -36,7 +38,7 @@ export async function post<T>(requestOptions: OptionsSchema, data: T): Promise<a
             });
             listener.on("end", () => {
                 let result = chunks.length ? Buffer.concat(chunks).toString() : chunks;
-                if(listener.statusCode > 300)
+                if(listener.statusCode >= 300)
                     reject(result);
                 else
                     resolve(result);
@@ -60,7 +62,7 @@ export async function post<T>(requestOptions: OptionsSchema, data: T): Promise<a
  */
 export async function get<T>(requestOptions: OptionsSchema): Promise<any> {
     //set protocol
-    const module = requestOptions.protocol.includes("http") ? http : https;
+    const module = requestOptions.protocol === "http" ? http : https;
     //set request options
     const options = setRequestOptions(requestOptions);
     const chunks: Array<any> = [];

@@ -103,6 +103,13 @@ export class InfluxDB {
             ? { "Authorization": `Token ${this.request.token}` }
             : {};
         headers = contentType ? { ...headers, "Content-Type": contentType } : headers;
+        headers = { 
+            ...headers,
+            "Host": this.request.host,
+            "Accept": "*/*",
+            "Connection": "keep-alive",
+            "Cache-Control": "no-cache" 
+        };
         return headers;
     }
 

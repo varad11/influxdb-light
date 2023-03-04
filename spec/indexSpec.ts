@@ -25,6 +25,20 @@ xdescribe("WRITE QUERY", () => {
             tags: ["deviceId", "location", "type", "enabled"]
         }, "orgtest", "demo1")).toBeResolvedTo([]);
     });
+
+    it("Test multiline write for V2.0 DB", async () => {
+        const payload: any = [
+            { deviceId: "d008", location: "L008", type: 7, enabled: false, valueX: 100, valueY: 120, ip: "192.168.0.8" },
+            { deviceId: "d009", location: "L009", type: 7, enabled: false, valueX: 200, valueY: 220, ip: "192.168.0.9" },
+            { deviceId: "d0010", location: "L0010", type: 7, enabled: false, valueX: 300, valueY: 320, ip: "192.168.0.10" },
+            { deviceId: "d0011", location: "L0011", type: 7, enabled: false, valueX: 400, valueY: 420, ip: "192.168.0.11" }
+          ];
+        await expectAsync(new InfluxDB(request).writeV2({
+            measurement: "energy",
+            payload,
+            tags: ["deviceId", "location", "type", "enabled"]
+        }, "orgtest", "demo1")).toBeResolvedTo([]);
+    });
 });
 
 xdescribe("READ QUERIES", () => {
