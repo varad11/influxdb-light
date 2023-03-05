@@ -24,8 +24,6 @@ export async function post<T>(requestOptions: OptionsSchema, data: T): Promise<a
     const module = requestOptions.protocol === "http" ? http : https;
     const options = { ...setRequestOptions(requestOptions), method: "POST" };
     const chunks: Array<any> = [];
-    //add content-length header
-    options.headers["Content-Length"] = Buffer.byteLength(JSON.stringify(data), "utf-8");
 
     //return promise of the response
     return new Promise((resolve: any, reject: any) => {
