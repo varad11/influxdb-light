@@ -1,9 +1,13 @@
 # influxdb-light
-A light-weight NodeJs client to Read & Write data to InfluxDb v1 and v2.  
-It supports both sql and flux query.  
-This light weight client is incredibly easy to use.  
+A light-weight client to read and write data to InfluxDb v1 and v2.  
+It supports both InfluxQL(SQL) and Flux queries.  
+This light-weight client is incredibly easy to use.  
 Handling of tags and fields is straightforward with no additional complexity.  
 
+## Good to know
+You have to create a DBRP mapping if you want to continue using InfluxQL(SQL) on your V2 buckets.  
+For more details on DBRP mapping please read this [guide].  
+[guide]: (https://varad11.medium.com/using-influxql-sql-with-influxdb-2-x-x-fddb5549dc0)
 ## Installation
 ```sh
 npm i influxdb-light
@@ -32,11 +36,19 @@ influxDb.writeV1({
                 deviceId: "d007",
                 location: "L007",
                 type: 7,
-                enabled: false,
+                enabled: true,
                 valueX: 100,
                 valueY: 120,
                 ip: "192.168.0.2"
-            }],
+            }, {
+                deviceId: "d009",
+                location: "L009",
+                type: 9,
+                enabled: false,
+                valueX: 110,
+                valueY: 130,
+                ip: "192.168.0.3"
+            }], //payload array can store multiple data point at once.
             tags: ["deviceId", "location", "type", "enabled"],
             timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
         }, 
@@ -94,15 +106,23 @@ const precision = "ns"; // precision is unit about timestamp of payload. and it'
 //Write to InfluxDb
 influxDb.writeV2({
             measurement: measurement,
-            payload: [{ //sample data point to store
+            payload: [{
                 deviceId: "d007",
                 location: "L007",
                 type: 7,
-                enabled: false,
+                enabled: true,
                 valueX: 100,
                 valueY: 120,
                 ip: "192.168.0.2"
-            }],
+            }, {
+                deviceId: "d009",
+                location: "L009",
+                type: 9,
+                enabled: false,
+                valueX: 110,
+                valueY: 130,
+                ip: "192.168.0.3"
+            }], //payload array can store multiple data point at once.
             tags: ["deviceId", "location", "type", "enabled"],
             timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
         }, org, dbName, precision)
