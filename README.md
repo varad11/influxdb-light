@@ -1,13 +1,12 @@
 # influxdb-light
-A light-weight client to read and write data to InfluxDb v1 and v2.  
+A light-weight client to read and write data to InfluxDb V1 and V2.  
 It supports both InfluxQL(SQL) and Flux queries.  
 This light-weight client is incredibly easy to use.  
 Handling of tags and fields is straightforward with no additional complexity.  
 
 ## Good to know
-You have to create a DBRP mapping if you want to continue using InfluxQL(SQL) on your V2 buckets.  
-For more details on DBRP mapping please read this [guide].  
-[guide]: (https://varad11.medium.com/using-influxql-sql-with-influxdb-2-x-x-fddb5549dc0)
+You have to create a DBRP mapping if you want to use InfluxQL(SQL) on your V2 buckets.  
+For more details on DBRP mapping please read this [guide](https://varad11.medium.com/using-influxql-sql-with-influxdb-2-x-x-fddb5549dc0).  
 ## Installation
 ```sh
 npm i influxdb-light
@@ -32,7 +31,7 @@ const measurement = "energy";
 //Write to InfluxDb
 influxDb.writeV1({
             measurement: measurement,
-            payload: [{ //payload array can store multiple data point at once.
+            payload: [{ //You can store multiple data point at once.
                 deviceId: "d007",
                 location: "L007",
                 type: 7,
@@ -106,7 +105,7 @@ const precision = "ns"; // precision is unit about timestamp of payload. and it'
 //Write to InfluxDb
 influxDb.writeV2({
             measurement: measurement,
-            payload: [{ //payload array can store multiple data point at once.
+            payload: [{ //You can store multiple data point at once.
                 deviceId: "d007",
                 location: "L007",
                 type: 7,
