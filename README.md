@@ -32,7 +32,7 @@ const measurement = "energy";
 //Write to InfluxDb
 influxDb.writeV1({
             measurement: measurement,
-            payload: [{ //sample data point to store
+            payload: [{ //payload array can store multiple data point at once.
                 deviceId: "d007",
                 location: "L007",
                 type: 7,
@@ -48,7 +48,7 @@ influxDb.writeV1({
                 valueX: 110,
                 valueY: 130,
                 ip: "192.168.0.3"
-            }], //payload array can store multiple data point at once.
+            }],
             tags: ["deviceId", "location", "type", "enabled"],
             timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
         }, 
@@ -106,7 +106,7 @@ const precision = "ns"; // precision is unit about timestamp of payload. and it'
 //Write to InfluxDb
 influxDb.writeV2({
             measurement: measurement,
-            payload: [{
+            payload: [{ //payload array can store multiple data point at once.
                 deviceId: "d007",
                 location: "L007",
                 type: 7,
@@ -122,7 +122,7 @@ influxDb.writeV2({
                 valueX: 110,
                 valueY: 130,
                 ip: "192.168.0.3"
-            }], //payload array can store multiple data point at once.
+            }],
             tags: ["deviceId", "location", "type", "enabled"],
             timestamp: 1664821800000000000 //timestamp is optional. Use this if you want to explicitly set different time.
         }, org, dbName, precision)
