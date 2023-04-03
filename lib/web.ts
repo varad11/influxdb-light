@@ -97,7 +97,7 @@ export function toInfluxFormat(inputData: RequestPayload) {
         //iterate over the keys
         for (const key in inputPayload) {
             if (Object.prototype.hasOwnProperty.call(inputPayload, key)) {
-                if(inputData.tags.includes(key)) {
+                if(inputData.tags){
                     //array of tags. Eg.: ["tag1=value1", "tag2=value2",....]
                     serializedTags.push(`${key}=${inputPayload[key]}`);
                 } else {
@@ -118,9 +118,11 @@ export function toInfluxFormat(inputData: RequestPayload) {
         result = result ? result + "\n" : result;
 
         //if tags present then comma after measurement field.
-        result += inputData.tags.length 
+        if(inputData.tags){
+            result += inputData.tags.length 
             ? `${inputData.measurement},${serializedTags.join(",")} ${serializedFields.join(",")}` 
             : `${inputData.measurement} ${serializedFields.join(",")}`;
+        }
         
         result += inputData.timestamp ? ` ${inputData.timestamp}` : ""; //update timestamp if explicitely provided
     }
